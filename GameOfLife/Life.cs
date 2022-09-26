@@ -1,29 +1,16 @@
-﻿namespace GameOfLife
+﻿using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+
+namespace GameOfLife
 {
     public class Life
     {
+        public const string Title = "Game of Life (Enclosed) - Generation: ";
+
         public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight, Console.WindowWidth / 2];
-        public int Generation { get; set; } = 0;
+        public int Generation { get; set; } = 1;
 
-        private void Initialize()
-        {
-            // Init all cells
-            for (int y = 0; y < Grid.GetLength(0); y++)
-            {
-                for (int x = 0; x < Grid.GetLength(1); x++)
-                {
-                    Grid[y, x] = new Cell(false, false);
-                }
-            }
-
-            Grid[16, 24].IsAlive = true;
-            Grid[14, 25].IsAlive = true;
-            Grid[15, 25].IsAlive = true;
-            Grid[16, 25].IsAlive = true;
-            Grid[15, 26].IsAlive = true;
-        }
-
-        private void Update()
+        private void MarkCells()
         {
             for (int y = 0; y < Grid.GetLength(0); y++)
             {
@@ -34,7 +21,10 @@
                     cell.IsMarked = cell.CanBeToggled(Grid, y, x);
                 }
             }
+        }
 
+        private void ToggleMarkedCells()
+        {
             for (int y = 0; y < Grid.GetLength(0); y++)
             {
                 for (int x = 0; x < Grid.GetLength(1); x++)
@@ -47,8 +37,34 @@
                     }
                 }
             }
+        }
+
+        private void Initialize()
+        {
+            // Init all cells
+            for (int y = 0; y < Grid.GetLength(0); y++)
+            {
+                for (int x = 0; x < Grid.GetLength(1); x++)
+                {
+                    Grid[y, x] = new Cell(false, false);
+                }
+            }
+
+            // Starting pattern
+            Grid[16, 24].IsAlive = true;
+            Grid[14, 25].IsAlive = true;
+            Grid[15, 25].IsAlive = true;
+            Grid[16, 25].IsAlive = true;
+            Grid[15, 26].IsAlive = true;
+        }
+
+        private void Update()
+        {
+            MarkCells();
+            ToggleMarkedCells();
 
             Generation++;
+            Console.Title = Title + Generation;
         }
 
         private void Draw()
@@ -75,10 +91,12 @@
         public void Run()
         {
             Initialize();
+            Draw();
+            Thread.Sleep(1000);
             while (true)
             {
-                Draw();
                 Update();
+                Draw();
                 Thread.Sleep(200);
             }
         }
