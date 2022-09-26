@@ -1,20 +1,26 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
     public class Life
     {
-        public int[,] Grid { get; set; } = new int[Console.WindowHeight, Console.WindowWidth / 2];
+        public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight, Console.WindowWidth / 2];
+        public int Generation { get; set; } = 0;
 
         private void Initialize()
         {
-            Grid[10, 11] = 1;
-            Grid[10, 12] = 1;
-            Grid[10, 13] = 1;
+            // Init all cells
+            for (int y = 0; y < Grid.GetLength(0); y++)
+            {
+                for (int x = 0; x < Grid.GetLength(1); x++)
+                {
+                    Grid[y, x] = new Cell(false, false);
+                }
+            }
 
-            Grid[10, 25] = 1;
-            Grid[11, 25] = 1;
-            Grid[12, 25] = 1;
+            Grid[16, 24].IsAlive = true;
+            Grid[14, 25].IsAlive = true;
+            Grid[15, 25].IsAlive = true;
+            Grid[16, 25].IsAlive = true;
+            Grid[15, 26].IsAlive = true;
         }
 
         private void Update()
@@ -23,9 +29,47 @@ namespace GameOfLife
             {
                 for (int x = 0; x < Grid.GetLength(1); x++)
                 {
-                    
+                    ref Cell cell = ref Grid[y, x];
+
+                    if (cell.IsAlive)
+                    {
+                        if (cell.InDanger(Grid, y, x))
+                        {
+                            cell.IsMarked = true;
+                        }
+                        else
+                        {
+                            cell.IsMarked = false;
+                        }
+                    }
+                    else
+                    {
+                        if (cell.CanBeRevived(Grid, y, x))
+                        {
+                            cell.IsMarked = true;
+                        }
+                        else
+                        {
+                            cell.IsMarked = false;
+                        }
+                    }
                 }
             }
+
+            for (int y = 0; y < Grid.GetLength(0); y++)
+            {
+                for (int x = 0; x < Grid.GetLength(1); x++)
+                {
+                    ref Cell cell = ref Grid[y, x];
+
+                    if (cell.IsMarked)
+                    {
+                        cell.IsAlive = !cell.IsAlive;
+                    }
+                }
+            }
+
+            Generation++;
         }
 
         private void Draw()
@@ -36,11 +80,12 @@ namespace GameOfLife
             {
                 for (int x = 0; x < Grid.GetLength(1); x++)
                 {
-                    char sign = Grid[y, x] switch
+                    ref Cell cell = ref Grid[y, x];
+
+                    char sign = cell.IsAlive switch
                     {
-                        0 => ' ',
-                        1 => '*',
-                        _ => throw new SwitchExpressionException()
+                        false => ' ',
+                        true => '*'
                     };
 
                     Console.Write($"{sign} ");
@@ -51,13 +96,11 @@ namespace GameOfLife
         public void Run()
         {
             Initialize();
-
-            bool run = true;
-            while (run)
+            while (true)
             {
                 Draw();
                 Update();
-                Console.ReadKey(true);
+                Thread.Sleep(200);
             }
         }
     }
