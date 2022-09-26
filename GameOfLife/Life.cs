@@ -31,28 +31,7 @@
                 {
                     ref Cell cell = ref Grid[y, x];
 
-                    if (cell.IsAlive)
-                    {
-                        if (cell.InDanger(Grid, y, x))
-                        {
-                            cell.IsMarked = true;
-                        }
-                        else
-                        {
-                            cell.IsMarked = false;
-                        }
-                    }
-                    else
-                    {
-                        if (cell.CanBeRevived(Grid, y, x))
-                        {
-                            cell.IsMarked = true;
-                        }
-                        else
-                        {
-                            cell.IsMarked = false;
-                        }
-                    }
+                    cell.IsMarked = cell.CanBeToggled(Grid, y, x);
                 }
             }
 
