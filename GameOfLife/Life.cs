@@ -2,7 +2,7 @@
 {
     public class Life
     {
-        public const string Title = "Game of Life (Enclosed) - Generation: ";
+        private const string Title = "Game of Life (Enclosed) - Generation: ";
 
         public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight, Console.WindowWidth / 2];
         public int Generation { get; set; } = 1;
