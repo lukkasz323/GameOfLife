@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
     public class Life
     {
@@ -41,6 +38,8 @@ namespace GameOfLife
 
         private void Initialize()
         {
+            Console.Title = Life.Title + "1";
+
             // Init all cells
             for (int y = 0; y < Grid.GetLength(0); y++)
             {

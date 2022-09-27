@@ -5,6 +5,12 @@
         public bool IsAlive { get; set; }
         public bool IsMarked { get; set; }
 
+        public Cell(bool isAlive, bool isMarked)
+        {
+            IsAlive = isAlive;
+            IsMarked = isMarked;
+        }
+
         public bool CanBeToggled(Cell[,] Grid, int y, int x)
         {
             var neighbours = new (int, int)[] // (y, x) offsets
@@ -45,12 +51,6 @@
             {
                 return (neighbours_count == 3);
             }
-        }
-
-        public Cell(bool isAlive, bool isMarked)
-        {
-            IsAlive = isAlive;
-            IsMarked = isMarked;
         }
     }
 }
