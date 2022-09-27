@@ -4,7 +4,7 @@
     {
         private const string Title = "Game of Life (Enclosed) - Generation: ";
 
-        public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight, Console.WindowWidth / 2];
+        public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight - 1, Console.WindowWidth / 2 - 1];
         public int Generation { get; set; } = 1;
 
         private void MarkCells()
