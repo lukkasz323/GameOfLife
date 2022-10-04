@@ -7,7 +7,7 @@
         public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight - 1, Console.WindowWidth / 2];
         public int Generation { get; set; } = 1;
 
-        private void MarkCells()
+        public void MarkCells()
         {
             for (int y = 0; y < Grid.GetLength(0); y++)
             {
@@ -20,7 +20,7 @@
             }
         }
 
-        private void ToggleMarkedCells()
+        public void ToggleMarkedCells()
         {
             for (int y = 0; y < Grid.GetLength(0); y++)
             {
@@ -36,7 +36,7 @@
             }
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             Console.Title = Life.Title + "1";
 
@@ -57,7 +57,7 @@
             Grid[15, 26].IsAlive = true;
         }
 
-        private void Update()
+        public void Update()
         {
             MarkCells();
             ToggleMarkedCells();
@@ -66,7 +66,7 @@
             Console.Title = Title + Generation;
         }
 
-        private void Draw()
+        public void Draw()
         {
             Console.Clear();
 
