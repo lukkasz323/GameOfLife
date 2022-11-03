@@ -19,3 +19,6 @@ For example:
 # Requirements
 - Windows
 - .NET 6
+
+# Known problems
+- The console window can sometimes not draw properly due to it's nature. Running the program directly from CMD and avoiding minimizing the console window should prevent this from happening.
