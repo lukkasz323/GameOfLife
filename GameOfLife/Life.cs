@@ -1,5 +1,8 @@
+﻿using System.Runtime.Versioning;
+
 ﻿namespace GameOfLife;
 
+[SupportedOSPlatform("windows")]
 public class Life
 {
     private const string Title = "Game of Life (Enclosed) - Generation: ";

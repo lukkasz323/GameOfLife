@@ -1,5 +1,15 @@
-﻿using GameOfLife;
+﻿using System.Runtime.Versioning;
 
-Life life = new();
+namespace GameOfLife;
 
-life.Run();
+[SupportedOSPlatform("windows")]
+class Program
+{
+    private static void Main(string[] args)
+    {
+        Life life = new(args);
+
+        life.Run();
+    }
+}
+
