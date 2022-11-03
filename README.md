@@ -11,6 +11,7 @@ Run ```GameOfLife.exe``` to start the console app.
 By default the game runs in a 50 x 40 (width x height) window.
 
 This behaviour can be overriden by specifying width and then height in starting parameters like this:
+
 ```GameOfLife <width> <height>```
 
 For example:
