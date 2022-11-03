@@ -1,13 +1,15 @@
 ﻿using System.Runtime.Versioning;
 
-﻿namespace GameOfLife;
+namespace GameOfLife;
 
 [SupportedOSPlatform("windows")]
 public class Life
 {
-    private const string Title = "Game of Life (Enclosed) - Generation: ";
+    private string Title { get; set; }
 
-    public Cell[,] Grid { get; set; } = new Cell[Console.WindowHeight - 1, Console.WindowWidth / 2];
+    public Cell[,] Grid { get; set; }
+    public int Height { get; set; } = 40;
+    public int Width { get; set; } = 60;
     public int Generation { get; set; } = 1;
 
     public void MarkCells()
@@ -41,7 +43,10 @@ public class Life
 
     public void Initialize()
     {
-        Console.Title = Life.Title + "1";
+        Console.Title = Title + "1";
+        Console.WindowHeight = Height + 1;
+        Console.WindowWidth = Width * 2;
+
 
         // Init all cells
         for (int y = 0; y < Grid.GetLength(0); y++)
@@ -53,11 +58,14 @@ public class Life
         }
 
         // Starting pattern
-        Grid[16, 24].IsAlive = true;
-        Grid[14, 25].IsAlive = true;
-        Grid[15, 25].IsAlive = true;
-        Grid[16, 25].IsAlive = true;
-        Grid[15, 26].IsAlive = true;
+        int midY = Grid.GetLength(0) / 2;
+        int midX = Grid.GetLength(1) / 2;
+
+        Grid[midY + 1, midX - 1].IsAlive = true;
+        Grid[midY - 1, midX].IsAlive = true;
+        Grid[midY, midX].IsAlive = true;
+        Grid[midY + 1, midX].IsAlive = true;
+        Grid[midY, midX + 1].IsAlive = true;
     }
 
     public void Update()
@@ -70,7 +78,7 @@ public class Life
     }
 
     public void Draw()
-    {
+    {   
         Console.Clear();
 
         for (int y = 0; y < Grid.GetLength(0); y++)
@@ -87,6 +95,7 @@ public class Life
 
                 Console.Write($"{sign} ");
             }
+            Console.WriteLine();
         }
     }
 
@@ -101,5 +110,22 @@ public class Life
             Draw();
             Thread.Sleep(200);
         }
+    }
+
+    public Life(string[] args)
+    {
+        try
+        {
+            int argHeight = int.Parse(args[0]);
+            int argWidth = int.Parse(args[1]);
+
+            Height = argHeight;
+            Width = argWidth;
+        }
+        catch (IndexOutOfRangeException) { }
+        catch (FormatException) { }
+
+        Grid = new Cell[Height, Width];
+        Title = $"Game of Life (W: {Width}, H: {Height}) - Generation: ";
     }
 }
